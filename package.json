@@ -1,6 +1,6 @@
 {
   "name": "next-markdown-blog",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An npm package that allows Next.js users to create blogs using markdown",
   "engines": {
     "node": ">=18.0.0"
@@ -34,6 +34,10 @@
   ],
   "author": "Dom Gaulton",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/domgaulton/next-markdown-blog.git"
+  },
   "peerDependencies": {
     "next": ">=14.0.0",
     "react": ">=18.0.0"
