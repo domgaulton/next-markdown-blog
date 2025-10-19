@@ -49,9 +49,9 @@ export class NextMarkdownBlog {
   }
 
   /**
-   * Get a specific blog post by slug and category
+   * Get a specific blog post by slug (category is optional for backward compatibility)
    */
-  async getPost(slug: string, category = 'uncategorized') {
+  async getPost(slug: string, category?: string) {
     const { getBlogPost } = await import('./utils/file-system');
     return getBlogPost(slug, category, this.config.contentDir);
   }

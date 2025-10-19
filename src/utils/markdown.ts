@@ -49,7 +49,18 @@ export function extractSlugFromPath(filePath: string): string {
  * Extract category from file path
  */
 export function extractCategoryFromPath(filePath: string, contentDir: string): string {
-  const relativePath = filePath.replace(contentDir, '').replace(/^\//, '');
+  // Normalize paths to handle different separators and relative paths
+  const normalizedContentDir = contentDir.replace(/\/$/, '').replace(/^\.\//, ''); // Remove trailing slash and ./ prefix
+  const normalizedFilePath = filePath.replace(/\\/g, '/').replace(/^\.\//, ''); // Normalize separators and remove ./ prefix
+  
+  // Remove the content directory from the file path
+  let relativePath = normalizedFilePath;
+  if (normalizedFilePath.startsWith(normalizedContentDir)) {
+    relativePath = normalizedFilePath.substring(normalizedContentDir.length);
+  }
+  
+  // Remove leading slash
+  relativePath = relativePath.replace(/^\//, '');
   const pathParts = relativePath.split('/');
 
   // If there's a category directory, use it

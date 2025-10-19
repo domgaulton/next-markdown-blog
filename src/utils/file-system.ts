@@ -74,16 +74,26 @@ export async function getAllBlogPosts(contentDir: string): Promise<BlogPost[]> {
 }
 
 /**
- * Get a specific blog post by slug and category
+ * Get a specific blog post by slug (category is optional for backward compatibility)
  */
 export async function getBlogPost(
   slug: string,
-  category: string,
-  contentDir: string
+  category?: string,
+  contentDir?: string
 ): Promise<BlogPost | null> {
-  const allPosts = await getAllBlogPosts(contentDir);
+  // Handle backward compatibility - if contentDir is not provided, category is the second parameter
+  const actualContentDir = contentDir || category || '';
+  const actualCategory = contentDir ? category : undefined;
+  
+  const allPosts = await getAllBlogPosts(actualContentDir);
 
-  return allPosts.find((post) => post.slug === slug && post.category === category) || null;
+  // If category is specified, find by both slug and category
+  if (actualCategory) {
+    return allPosts.find((post) => post.slug === slug && post.category === actualCategory) || null;
+  }
+  
+  // Otherwise, find by slug only (simplified routing)
+  return allPosts.find((post) => post.slug === slug) || null;
 }
 
 /**

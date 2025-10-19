@@ -18,7 +18,7 @@ describe('Integration Tests', () => {
     useMDX: false,
   };
 
-  before(() => {
+  before(async () => {
     // Create test content directory
     mkdirSync(testContentDir, { recursive: true });
     mkdirSync(join(testContentDir, 'technology'), { recursive: true });
@@ -84,7 +84,7 @@ This is a test post without a specific category.
     writeFileSync(join(testContentDir, 'uncategorized-post.md'), testPost3);
   });
 
-  after(() => {
+  after(async () => {
     // Clean up test content directory
     rmSync(testContentDir, { recursive: true, force: true });
   });
@@ -92,7 +92,7 @@ This is a test post without a specific category.
   describe('NextMarkdownBlog Integration', () => {
     let blog: NextMarkdownBlog;
 
-    before(() => {
+    before(async () => {
       blog = new NextMarkdownBlog(config);
     });
 
