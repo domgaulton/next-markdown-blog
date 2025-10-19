@@ -82,7 +82,7 @@ export default async function BlogPage() {
                       )}
                       <div className="flex items-center justify-between">
                         <div className="flex flex-wrap gap-1">
-                          {post.metadata.tags?.slice(0, 2).map((tag, index) => (
+                          {post.metadata.tags?.slice(0, 2).map((tag: string, index: number) => (
                             <span
                               key={index}
                               className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
