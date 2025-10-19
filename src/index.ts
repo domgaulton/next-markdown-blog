@@ -1,5 +1,5 @@
 // Main exports
-export { BlogPost as BlogPostComponent } from './components/BlogPost';
+export { BlogPostComponent } from './components/BlogPost';
 
 // Utility functions
 export {

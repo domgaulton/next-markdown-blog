@@ -8,7 +8,11 @@ interface BlogPostProps {
   optimizeImages?: boolean;
 }
 
-export function BlogPost({ post, styleClasses = {}, optimizeImages = false }: BlogPostProps) {
+export function BlogPostComponent({
+  post,
+  styleClasses = {},
+  optimizeImages = false,
+}: BlogPostProps) {
   const defaultStyles: StyleClasses = {
     h1: 'text-4xl font-bold mb-6',
     h2: 'text-3xl font-semibold mb-4 mt-8',
@@ -36,19 +40,18 @@ export function BlogPost({ post, styleClasses = {}, optimizeImages = false }: Bl
     let processedContent = htmlContent;
 
     // Apply custom styles to HTML elements
-    Object.entries(mergedStyles).forEach(([tag, className]) => {
+    for (const [tag, className] of Object.entries(mergedStyles)) {
       if (className) {
         const regex = new RegExp(`<${tag}([^>]*)>`, 'g');
         processedContent = processedContent.replace(regex, (match, attributes) => {
           // Check if class already exists
           if (attributes.includes('class=')) {
             return match.replace(/class="([^"]*)"/, `class="$1 ${className}"`);
-          } else {
-            return `<${tag} class="${className}"${attributes}>`;
           }
+          return `<${tag} class="${className}"${attributes}>`;
         });
       }
-    });
+    }
 
     // Handle image optimization if enabled
     if (optimizeImages) {
@@ -106,11 +109,8 @@ export function BlogPost({ post, styleClasses = {}, optimizeImages = false }: Bl
       {post.metadata.tags && post.metadata.tags.length > 0 && (
         <footer className="mt-8 pt-6 border-t border-gray-200">
           <div className="flex flex-wrap gap-2">
-            {post.metadata.tags.map((tag, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
-              >
+            {post.metadata.tags.map((tag) => (
+              <span key={tag} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
                 #{tag}
               </span>
             ))}

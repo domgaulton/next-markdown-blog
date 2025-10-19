@@ -51,6 +51,9 @@ export function parseRouteParams(
 /**
  * Generate static params for Next.js dynamic routes
  */
-export function generateStaticParams(posts: BlogPost[], _basePath: string): Array<{ slug: string }> {
+export function generateStaticParams(
+  posts: BlogPost[],
+  _basePath: string
+): Array<{ slug: string }> {
   return posts.map((post) => ({ slug: post.slug }));
 }

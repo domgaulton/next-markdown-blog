@@ -1,4 +1,4 @@
-import { NextMarkdownBlog, type BlogPost } from 'next-markdown-blog';
+import { type BlogPost, NextMarkdownBlog } from 'next-markdown-blog';
 import Link from 'next/link';
 import config from '../../next-markdown-blog.config.js';
 
@@ -52,57 +52,59 @@ export default async function BlogPage() {
 
         <div className="lg:col-span-3">
           <div className="space-y-8">
-            {(Object.entries(postsByCategory) as [string, BlogPost[]][]).map(([category, categoryPosts]) => (
-              <section key={category}>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6 capitalize">{category}</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {categoryPosts.map((post) => (
-                    <article
-                      key={post.slug}
-                      className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
-                    >
-                      <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                        <time dateTime={post.metadata.date}>
-                          {new Date(post.metadata.date).toLocaleDateString()}
-                        </time>
-                        {post.metadata.author && <span>by {post.metadata.author}</span>}
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          className="hover:text-blue-600 transition-colors"
-                        >
-                          {post.metadata.title}
-                        </Link>
-                      </h3>
-                      {post.metadata.description && (
-                        <p className="text-gray-600 text-sm mb-3 line-clamp-3">
-                          {post.metadata.description}
-                        </p>
-                      )}
-                      <div className="flex items-center justify-between">
-                        <div className="flex flex-wrap gap-1">
-                          {post.metadata.tags?.slice(0, 2).map((tag: string, index: number) => (
-                            <span
-                              key={index}
-                              className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
-                            >
-                              #{tag}
-                            </span>
-                          ))}
+            {(Object.entries(postsByCategory) as [string, BlogPost[]][]).map(
+              ([category, categoryPosts]) => (
+                <section key={category}>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6 capitalize">{category}</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {categoryPosts.map((post) => (
+                      <article
+                        key={post.slug}
+                        className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+                      >
+                        <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                          <time dateTime={post.metadata.date}>
+                            {new Date(post.metadata.date).toLocaleDateString()}
+                          </time>
+                          {post.metadata.author && <span>by {post.metadata.author}</span>}
                         </div>
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                        >
-                          Read more →
-                        </Link>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </section>
-            ))}
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                          <Link
+                            href={`/blog/${post.slug}`}
+                            className="hover:text-blue-600 transition-colors"
+                          >
+                            {post.metadata.title}
+                          </Link>
+                        </h3>
+                        {post.metadata.description && (
+                          <p className="text-gray-600 text-sm mb-3 line-clamp-3">
+                            {post.metadata.description}
+                          </p>
+                        )}
+                        <div className="flex items-center justify-between">
+                          <div className="flex flex-wrap gap-1">
+                            {post.metadata.tags?.slice(0, 2).map((tag: string) => (
+                              <span
+                                key={tag}
+                                className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
+                              >
+                                #{tag}
+                              </span>
+                            ))}
+                          </div>
+                          <Link
+                            href={`/blog/${post.slug}`}
+                            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                          >
+                            Read more →
+                          </Link>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              )
+            )}
           </div>
         </div>
       </div>

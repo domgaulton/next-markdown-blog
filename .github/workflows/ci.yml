@@ -28,7 +28,6 @@ jobs:
 
       - name: Lint with Biome
         run: npx @biomejs/biome check .
-        continue-on-error: true
 
       - name: Type check
         run: npm run type-check

@@ -1,7 +1,7 @@
-import { mkdirSync, rmSync, writeFileSync } from 'fs';
 import assert from 'node:assert';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { after, before, describe, it } from 'node:test';
-import { join } from 'path';
 import { NextMarkdownBlog } from '../src/index';
 import { generateAllRoutes, parseRouteParams } from '../src/utils/routing';
 

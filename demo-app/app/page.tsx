@@ -49,9 +49,9 @@ export default async function HomePage() {
                 )}
                 <div className="flex items-center justify-between">
                   <div className="flex flex-wrap gap-2">
-                    {post.metadata.tags?.slice(0, 3).map((tag: string, index: number) => (
+                    {post.metadata.tags?.slice(0, 3).map((tag: string) => (
                       <span
-                        key={index}
+                        key={tag}
                         className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
                       >
                         #{tag}

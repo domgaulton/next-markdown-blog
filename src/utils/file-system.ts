@@ -1,5 +1,5 @@
-import { readFileSync, readdirSync, statSync } from 'fs';
-import { extname, join } from 'path';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { extname, join } from 'node:path';
 import type { BlogPost } from '../types/index.js';
 import {
   extractCategoryFromPath,
