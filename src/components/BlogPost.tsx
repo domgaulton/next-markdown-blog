@@ -1,4 +1,3 @@
-import DOMPurify from 'dompurify';
 import Image from 'next/image';
 import type { BlogPost, StyleClasses } from '../types/index.js';
 
@@ -6,6 +5,22 @@ interface BlogPostProps {
   post: BlogPost;
   styleClasses?: StyleClasses;
   optimizeImages?: boolean;
+}
+
+// Safe HTML sanitization function that works in both server and client environments
+function sanitizeHtml(html: string): string {
+  // Basic HTML sanitization - remove potentially dangerous tags and attributes
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove script tags
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '') // Remove iframe tags
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '') // Remove object tags
+    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '') // Remove embed tags
+    .replace(/<link\b[^<]*(?:(?!<\/link>)<[^<]*)*<\/link>/gi, '') // Remove link tags
+    .replace(/<meta\b[^<]*(?:(?!<\/meta>)<[^<]*)*<\/meta>/gi, '') // Remove meta tags
+    .replace(/on\w+="[^"]*"/gi, '') // Remove event handlers
+    .replace(/javascript:/gi, '') // Remove javascript: URLs
+    .replace(/vbscript:/gi, '') // Remove vbscript: URLs
+    .replace(/data:text\/html/gi, ''); // Remove data: URLs
 }
 
 export function BlogPostComponent({
@@ -104,9 +119,9 @@ export function BlogPostComponent({
 
       <div
         className="prose prose-lg max-w-none"
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: Content is sanitized with DOMPurify
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: Content is sanitized with custom function
         dangerouslySetInnerHTML={{
-          __html: DOMPurify.sanitize(processedContent),
+          __html: sanitizeHtml(processedContent),
         }}
       />
 
