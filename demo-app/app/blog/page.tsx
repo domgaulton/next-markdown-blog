@@ -52,7 +52,7 @@ export default async function BlogPage() {
 
         <div className="lg:col-span-3">
           <div className="space-y-8">
-            {Object.entries(postsByCategory).map(([category, categoryPosts]) => (
+            {Object.entries(postsByCategory).map(([category, categoryPosts]: [string, typeof posts]) => (
               <section key={category}>
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 capitalize">{category}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
