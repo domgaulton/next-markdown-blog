@@ -55,7 +55,19 @@ jobs:
         run: npm ci
 
       - name: Build package
-        run: npm run build
+        run: |
+          # Clear any incremental build cache
+          rm -rf tsconfig.tsbuildinfo
+          npm run build
+
+      - name: Verify package build
+        run: |
+          echo "Verifying package build:"
+          ls -la dist/
+          echo "Checking main entry point:"
+          head -5 dist/index.js
+          echo "Checking utils files:"
+          ls -la dist/utils/
 
       - name: Run integration tests
         run: npm run test:integration
@@ -64,10 +76,23 @@ jobs:
         run: |
           cd demo-app
           npm ci
+          # Ensure the symlinked package is properly resolved
+          ls -la node_modules/next-markdown-blog/dist/
+          # Reinstall the package to ensure it uses the latest build
+          npm install
 
       - name: Build demo app
         run: |
           cd demo-app
+          # Clear any cached builds
+          rm -rf .next
+          # Debug: Check what the demo app sees
+          echo "Checking package structure:"
+          ls -la node_modules/next-markdown-blog/
+          echo "Checking dist files:"
+          ls -la node_modules/next-markdown-blog/dist/
+          echo "Checking main entry point:"
+          head -10 node_modules/next-markdown-blog/dist/index.js
           npm run build
 
       - name: Test demo app content
@@ -109,10 +134,12 @@ jobs:
         run: npm run test:unit
 
       - name: Build package
-        run: npm run build
+        run: |
+          # Clear any incremental build cache
+          rm -rf tsconfig.tsbuildinfo
+          npm run build
 
-      # TODO: Handle secrets and handle semantic versioning
-      # - name: Publish to npm
-      #   run: npm publish
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
