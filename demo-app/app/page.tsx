@@ -1,5 +1,5 @@
-import { NextMarkdownBlog } from 'next-markdown-blog';
 import Link from 'next/link';
+import { NextMarkdownBlog } from 'next-markdown-blog';
 import config from '../next-markdown-blog.config.js';
 
 export default async function HomePage() {

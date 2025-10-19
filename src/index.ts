@@ -1,39 +1,36 @@
 // Main exports
 export { BlogPostComponent } from './components/BlogPost';
+// Types
+export type {
+  BlogPost,
+  BlogPostMetadata,
+  NextMarkdownBlogConfig,
+  ParsedMarkdown,
+  RouteInfo,
+  StyleClasses,
+} from './types/index';
 
-// Utility functions
 export {
-  parseMarkdown,
-  markdownToHtml,
-  extractSlugFromPath,
-  extractCategoryFromPath,
-  generateRoutePath,
-} from './utils/markdown';
-
-export {
-  getMarkdownFiles,
-  readMarkdownFile,
   getAllBlogPosts,
   getBlogPost,
   getCategories,
+  getMarkdownFiles,
+  readMarkdownFile,
 } from './utils/file-system';
-
+// Utility functions
 export {
-  generateRouteInfo,
+  extractCategoryFromPath,
+  extractSlugFromPath,
+  generateRoutePath,
+  markdownToHtml,
+  parseMarkdown,
+} from './utils/markdown';
+export {
   generateAllRoutes,
-  parseRouteParams,
+  generateRouteInfo,
   generateStaticParams,
+  parseRouteParams,
 } from './utils/routing';
-
-// Types
-export type {
-  BlogPostMetadata,
-  BlogPost,
-  StyleClasses,
-  NextMarkdownBlogConfig,
-  RouteInfo,
-  ParsedMarkdown,
-} from './types/index';
 
 // Main class for managing blog posts
 export class NextMarkdownBlog {

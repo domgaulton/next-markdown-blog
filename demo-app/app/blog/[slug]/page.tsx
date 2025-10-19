@@ -1,6 +1,6 @@
-import { type BlogPost, BlogPostComponent, NextMarkdownBlog } from 'next-markdown-blog';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { type BlogPost, BlogPostComponent, NextMarkdownBlog } from 'next-markdown-blog';
 import config from '../../../next-markdown-blog.config.js';
 
 interface PageProps {

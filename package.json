@@ -7,7 +7,10 @@
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
@@ -21,7 +24,14 @@
     "type-check": "tsc --noEmit",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["nextjs", "markdown", "blog", "mdx", "ssg", "static-site-generation"],
+  "keywords": [
+    "nextjs",
+    "markdown",
+    "blog",
+    "mdx",
+    "ssg",
+    "static-site-generation"
+  ],
   "author": "",
   "license": "MIT",
   "peerDependencies": {
@@ -29,6 +39,7 @@
     "react": ">=18.0.0"
   },
   "dependencies": {
+    "@biomejs/biome": "2.2.6",
     "@types/dompurify": "3.0.5",
     "dompurify": "3.3.0",
     "gray-matter": "^4.0.3",
@@ -39,7 +50,6 @@
     "unified": "^11.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.3.3",
     "@types/node": "^20.0.0",
     "@types/react": "^18.0.0",
     "tsx": "^4.0.0",

@@ -1,6 +1,4 @@
 import matter from 'gray-matter';
-import { rehype } from 'rehype';
-import rehypeStringify from 'rehype-stringify';
 import { remark } from 'remark';
 import remarkHtml from 'remark-html';
 import type { BlogPostMetadata, ParsedMarkdown } from '../types/index.js';

@@ -91,6 +91,7 @@ export function BlogPostComponent({
                 priority
               />
             ) : (
+              // biome-ignore lint/performance/noImgElement: Fallback for when optimizeImages is false
               <img
                 src={post.metadata.ogImage}
                 alt={post.metadata.title}
