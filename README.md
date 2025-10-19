@@ -22,7 +22,7 @@ npm install next-markdown-blog
 
 ## Quick Start
 
-See an example installation / demo on the package (github page)[https://www.npmjs.com/package/next-markdown-blog]
+See an example installation / demo on the package [github page](https://www.npmjs.com/package/next-markdown-blog)
 
 1. Create a configuration file `next-markdown-blog.config.js`:
 
@@ -77,24 +77,57 @@ It makes creating markdown-based blogs in Next.js effortless.
 
 ```tsx
 // app/blog/[slug]/page.tsx
-import { NextMarkdownBlog, BlogPostComponent } from 'next-markdown-blog';
+import { notFound } from 'next/navigation';
+import { NextMarkdownBlog, BlogPostComponent, type BlogPost } from 'next-markdown-blog';
 import config from '../../../next-markdown-blog.config.js';
+
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
 
 export async function generateStaticParams() {
   const blog = new NextMarkdownBlog(config);
   return await blog.generateStaticParams();
 }
 
-export default async function BlogPostPage({ params }) {
+export async function generateMetadata({ params }: PageProps) {
   const blog = new NextMarkdownBlog(config);
   const posts = await blog.getAllPosts();
-  const post = posts.find((p) => p.slug === params.slug);
+  const post = posts.find((p: BlogPost) => p.slug === params.slug);
+
+  if (!post) {
+    return { title: 'Post Not Found' };
+  }
+
+  return {
+    title: post.metadata.title,
+    description: post.metadata.description,
+    openGraph: {
+      title: post.metadata.title,
+      description: post.metadata.description,
+      images: post.metadata.ogImage ? [post.metadata.ogImage] : [],
+    },
+  };
+}
+
+export default async function BlogPostPage({ params }: PageProps) {
+  const blog = new NextMarkdownBlog(config);
+  const posts = await blog.getAllPosts();
+  const post = posts.find((p: BlogPost) => p.slug === params.slug);
 
   if (!post) {
     notFound();
   }
 
-  return <BlogPostComponent post={post} styleClasses={config.styleClasses} />;
+  return (
+    <BlogPostComponent
+      post={post}
+      styleClasses={config.styleClasses}
+      optimizeImages={config.optimizeImages}
+    />
+  );
 }
 ```
 
@@ -134,6 +167,70 @@ interface StyleClasses {
 }
 ```
 
+## Types
+
+The package exports several TypeScript types for better development experience:
+
+### Core Types
+
+```typescript
+// Main blog post type
+interface BlogPost {
+  slug: string;
+  content: string;
+  metadata: BlogPostMetadata;
+  category: string;
+  filePath: string;
+}
+
+// Blog post frontmatter metadata
+interface BlogPostMetadata {
+  title: string;
+  date: string;
+  category: string;
+  ogImage?: string;
+  description?: string;
+  author?: string;
+  tags?: string[];
+  [key: string]: unknown; // Allow custom fields
+}
+
+// Configuration interface
+interface NextMarkdownBlogConfig {
+  contentDir: string;
+  basePath: string;
+  styleClasses?: StyleClasses;
+  optimizeImages?: boolean;
+  useMDX?: boolean;
+}
+
+// Route information
+interface RouteInfo {
+  slug: string;
+  category: string;
+  fullPath: string;
+}
+
+// Parsed markdown result
+interface ParsedMarkdown {
+  content: string;
+  metadata: BlogPostMetadata;
+}
+```
+
+### Importing Types
+
+```typescript
+import {
+  type BlogPost,
+  type BlogPostMetadata,
+  type NextMarkdownBlogConfig,
+  type StyleClasses,
+  type RouteInfo,
+  type ParsedMarkdown,
+} from 'next-markdown-blog';
+```
+
 ## API Reference
 
 ### NextMarkdownBlog
@@ -154,6 +251,9 @@ const categories = await blog.getCategories();
 
 // Generate static params for Next.js
 const staticParams = await blog.generateStaticParams();
+
+// Get configuration
+const config = blog.getConfig();
 ```
 
 ### BlogPostComponent
@@ -168,6 +268,161 @@ React component for rendering blog posts.
 />
 ```
 
+### Utility Functions
+
+The package also exports utility functions for advanced use cases:
+
+#### File System Utilities
+
+```typescript
+import {
+  getAllBlogPosts,
+  getBlogPost,
+  getCategories,
+  getMarkdownFiles,
+  readMarkdownFile,
+} from 'next-markdown-blog';
+
+// Get all blog posts from a directory
+const posts = await getAllBlogPosts('./content');
+
+// Get a specific post
+const post = await getBlogPost('my-post', 'technology', './content');
+
+// Get all categories
+const categories = await getCategories('./content');
+
+// Get all markdown files
+const files = await getMarkdownFiles('./content');
+
+// Read a single markdown file
+const content = await readMarkdownFile('./content/post.md');
+```
+
+#### Markdown Utilities
+
+```typescript
+import {
+  markdownToHtml,
+  parseMarkdown,
+  extractCategoryFromPath,
+  extractSlugFromPath,
+  generateRoutePath,
+} from 'next-markdown-blog';
+
+// Convert markdown to HTML
+const html = await markdownToHtml('# Hello World');
+
+// Parse markdown with frontmatter
+const parsed = await parseMarkdown(markdownContent);
+
+// Extract category from file path
+const category = extractCategoryFromPath('./content/tech/post.md');
+
+// Extract slug from file path
+const slug = extractSlugFromPath('./content/tech/my-post.md');
+
+// Generate route path
+const routePath = generateRoutePath('my-post', 'tech', '/blog');
+```
+
+#### Routing Utilities
+
+```typescript
+import {
+  generateAllRoutes,
+  generateRouteInfo,
+  generateStaticParams,
+  parseRouteParams,
+} from 'next-markdown-blog';
+
+// Generate all routes for posts
+const routes = await generateAllRoutes(posts, '/blog');
+
+// Generate route info for a post
+const routeInfo = generateRouteInfo(post, '/blog');
+
+// Generate static params for Next.js
+const staticParams = await generateStaticParams(posts, '/blog');
+
+// Parse route parameters
+const params = parseRouteParams('/blog/tech/my-post');
+```
+
+## Blog Listing Page
+
+Create a blog index page to list all posts:
+
+```tsx
+// app/blog/page.tsx
+import Link from 'next/link';
+import { type BlogPost, NextMarkdownBlog } from 'next-markdown-blog';
+import config from '../../next-markdown-blog.config.js';
+
+export default async function BlogPage() {
+  const blog = new NextMarkdownBlog(config);
+  const posts = await blog.getAllPosts();
+  const categories = await blog.getCategories();
+
+  // Group posts by category
+  const postsByCategory = posts.reduce((acc, post) => {
+    if (!acc[post.category]) {
+      acc[post.category] = [];
+    }
+    acc[post.category].push(post);
+    return acc;
+  }, {} as Record<string, BlogPost[]>);
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">Blog</h1>
+        <p className="text-xl text-gray-600">All posts organized by category</p>
+      </div>
+
+      <div className="space-y-8">
+        {Object.entries(postsByCategory).map(([category, categoryPosts]) => (
+          <section key={category}>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 capitalize">{category}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {categoryPosts.map((post) => (
+                <article
+                  key={post.slug}
+                  className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+                >
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="hover:text-blue-600 transition-colors"
+                    >
+                      {post.metadata.title}
+                    </Link>
+                  </h3>
+                  {post.metadata.description && (
+                    <p className="text-gray-600 text-sm mb-3">{post.metadata.description}</p>
+                  )}
+                  <div className="flex items-center justify-between">
+                    <time className="text-sm text-gray-500">
+                      {new Date(post.metadata.date).toLocaleDateString()}
+                    </time>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    >
+                      Read more →
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
 ## Routing
 
 The package uses a simplified routing pattern:
@@ -179,8 +434,9 @@ Create the following file structure in your Next.js app:
 ```
 app/
   blog/
+    page.tsx      # Blog listing page
     [slug]/
-      page.tsx    # For all blog posts
+      page.tsx    # Individual blog post pages
 ```
 
 ## Frontmatter
