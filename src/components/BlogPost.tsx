@@ -1,5 +1,5 @@
+import DOMPurify from 'dompurify';
 import Image from 'next/image';
-import React from 'react';
 import type { BlogPost, StyleClasses } from '../types/index.js';
 
 interface BlogPostProps {
@@ -103,7 +103,10 @@ export function BlogPostComponent({
 
       <div
         className="prose prose-lg max-w-none"
-        dangerouslySetInnerHTML={{ __html: processedContent }}
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: Content is sanitized with DOMPurify
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(processedContent),
+        }}
       />
 
       {post.metadata.tags && post.metadata.tags.length > 0 && (
