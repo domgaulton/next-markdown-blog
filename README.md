@@ -1,5 +1,7 @@
 # next-markdown-blog
 
+https://www.npmjs.com/package/next-markdown-blog
+
 An npm package that allows Next.js users to create blogs using markdown with server-side rendering, dynamic routing, and custom styling.
 
 ## Features
@@ -19,6 +21,8 @@ npm install next-markdown-blog
 ```
 
 ## Quick Start
+
+See an example installation / demo on the package (github page)[https://www.npmjs.com/package/next-markdown-blog]
 
 1. Create a configuration file `next-markdown-blog.config.js`:
 
