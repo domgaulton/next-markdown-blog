@@ -55,7 +55,10 @@ jobs:
         run: npm ci
 
       - name: Build package
-        run: npm run build
+        run: |
+          # Clear any incremental build cache
+          rm -rf tsconfig.tsbuildinfo
+          npm run build
 
       - name: Verify package build
         run: |
@@ -131,7 +134,10 @@ jobs:
         run: npm run test:unit
 
       - name: Build package
-        run: npm run build
+        run: |
+          # Clear any incremental build cache
+          rm -rf tsconfig.tsbuildinfo
+          npm run build
 
       - name: Publish to npm
         run: npm publish
