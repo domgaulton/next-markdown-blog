@@ -4,12 +4,9 @@ import { generateRoutePath } from './markdown.js';
 /**
  * Generate route information for a blog post
  */
-export function generateRouteInfo(
-  post: BlogPost,
-  basePath: string,
-): RouteInfo {
+export function generateRouteInfo(post: BlogPost, basePath: string): RouteInfo {
   const fullPath = generateRoutePath(post.slug, post.category, basePath);
-  
+
   return {
     slug: post.slug,
     category: post.category,
@@ -20,11 +17,8 @@ export function generateRouteInfo(
 /**
  * Generate all route information for blog posts
  */
-export function generateAllRoutes(
-  posts: BlogPost[],
-  basePath: string,
-): RouteInfo[] {
-  return posts.map(post => generateRouteInfo(post, basePath));
+export function generateAllRoutes(posts: BlogPost[], basePath: string): RouteInfo[] {
+  return posts.map((post) => generateRouteInfo(post, basePath));
 }
 
 /**
@@ -32,17 +26,17 @@ export function generateAllRoutes(
  */
 export function parseRouteParams(
   pathname: string,
-  basePath: string,
+  basePath: string
 ): { slug: string; category: string } | null {
   const cleanBasePath = basePath.replace(/\/$/, '');
   const pathWithoutBase = pathname.replace(cleanBasePath, '').replace(/^\//, '');
-  
+
   if (!pathWithoutBase) {
     return null;
   }
-  
+
   const pathParts = pathWithoutBase.split('/');
-  
+
   if (pathParts.length === 1) {
     // /blog/slug format - category will be determined by finding the post
     return {
@@ -50,16 +44,13 @@ export function parseRouteParams(
       category: '', // Will be determined by finding the actual post
     };
   }
-  
+
   return null;
 }
 
 /**
  * Generate static params for Next.js dynamic routes
  */
-export function generateStaticParams(
-  posts: BlogPost[],
-  basePath: string,
-): Array<{ slug: string }> {
-  return posts.map(post => ({ slug: post.slug }));
+export function generateStaticParams(posts: BlogPost[], _basePath: string): Array<{ slug: string }> {
+  return posts.map((post) => ({ slug: post.slug }));
 }

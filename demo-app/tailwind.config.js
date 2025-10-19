@@ -56,7 +56,8 @@ module.exports = {
               padding: '0.125rem 0.25rem',
               borderRadius: '0.25rem',
               fontSize: '0.875rem',
-              fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+              fontFamily:
+                'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
               color: '#1f2937',
             },
             pre: {
@@ -72,7 +73,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [require('@tailwindcss/typography')],
 };

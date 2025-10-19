@@ -1,11 +1,11 @@
-import { describe, it } from 'node:test';
 import assert from 'node:assert';
+import { describe, it } from 'node:test';
 import {
-  parseMarkdown,
-  markdownToHtml,
-  extractSlugFromPath,
   extractCategoryFromPath,
+  extractSlugFromPath,
   generateRoutePath,
+  markdownToHtml,
+  parseMarkdown,
 } from '../src/utils/markdown.js';
 
 describe('parseMarkdown', () => {
@@ -94,12 +94,21 @@ describe('extractSlugFromPath', () => {
 
 describe('extractCategoryFromPath', () => {
   it('should extract category from nested path', () => {
-    assert.strictEqual(extractCategoryFromPath('/content/technology/test-post.md', '/content'), 'technology');
-    assert.strictEqual(extractCategoryFromPath('/content/culture/team-values.md', '/content'), 'culture');
+    assert.strictEqual(
+      extractCategoryFromPath('/content/technology/test-post.md', '/content'),
+      'technology'
+    );
+    assert.strictEqual(
+      extractCategoryFromPath('/content/culture/team-values.md', '/content'),
+      'culture'
+    );
   });
 
   it('should return uncategorized for flat structure', () => {
-    assert.strictEqual(extractCategoryFromPath('/content/test-post.md', '/content'), 'uncategorized');
+    assert.strictEqual(
+      extractCategoryFromPath('/content/test-post.md', '/content'),
+      'uncategorized'
+    );
   });
 
   it('should handle empty contentDir', () => {

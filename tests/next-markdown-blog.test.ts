@@ -1,5 +1,5 @@
-import { describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert';
+import { beforeEach, describe, it } from 'node:test';
 import { NextMarkdownBlog } from '../src/index';
 import type { NextMarkdownBlogConfig } from '../src/types/index';
 

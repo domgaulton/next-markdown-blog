@@ -1,5 +1,5 @@
-import React from 'react';
 import Image from 'next/image';
+import React from 'react';
 import type { BlogPost, StyleClasses } from '../types/index.js';
 
 interface BlogPostProps {
@@ -54,10 +54,7 @@ export function BlogPost({ post, styleClasses = {}, optimizeImages = false }: Bl
     if (optimizeImages) {
       // This would need to be handled differently in a real implementation
       // For now, we'll just add a data attribute to identify images
-      processedContent = processedContent.replace(
-        /<img([^>]*)>/g,
-        '<img data-optimize="true"$1>'
-      );
+      processedContent = processedContent.replace(/<img([^>]*)>/g, '<img data-optimize="true"$1>');
     }
 
     return processedContent;
@@ -73,12 +70,8 @@ export function BlogPost({ post, styleClasses = {}, optimizeImages = false }: Bl
           <time dateTime={post.metadata.date}>
             {new Date(post.metadata.date).toLocaleDateString()}
           </time>
-          <span className="px-2 py-1 bg-gray-100 rounded-full">
-            {post.category}
-          </span>
-          {post.metadata.author && (
-            <span>By {post.metadata.author}</span>
-          )}
+          <span className="px-2 py-1 bg-gray-100 rounded-full">{post.category}</span>
+          {post.metadata.author && <span>By {post.metadata.author}</span>}
         </div>
         {post.metadata.description && (
           <p className="text-lg text-gray-700">{post.metadata.description}</p>
@@ -104,12 +97,12 @@ export function BlogPost({ post, styleClasses = {}, optimizeImages = false }: Bl
           </div>
         )}
       </header>
-      
-      <div 
+
+      <div
         className="prose prose-lg max-w-none"
         dangerouslySetInnerHTML={{ __html: processedContent }}
       />
-      
+
       {post.metadata.tags && post.metadata.tags.length > 0 && (
         <footer className="mt-8 pt-6 border-t border-gray-200">
           <div className="flex flex-wrap gap-2">

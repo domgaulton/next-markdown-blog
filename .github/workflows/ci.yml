@@ -33,7 +33,7 @@ jobs:
         run: npm run type-check
 
       - name: Run unit tests
-        run: npm run test
+        run: npm run test:unit
 
       - name: Build package
         run: npm run build
@@ -56,6 +56,10 @@ jobs:
 
       - name: Build package
         run: npm run build
+
+      - name: Run integration tests
+        run: npm run test:integration
+        continue-on-error: true
 
       - name: Setup demo app
         run: |
@@ -101,6 +105,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:unit
 
       - name: Build package
         run: npm run build

@@ -21,9 +21,7 @@ export default function RootLayout({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center py-6">
               <div className="flex items-center">
-                <h1 className="text-2xl font-bold text-gray-900">
-                  Next Markdown Blog Demo
-                </h1>
+                <h1 className="text-2xl font-bold text-gray-900">Next Markdown Blog Demo</h1>
               </div>
               <nav className="flex space-x-8">
                 <a
@@ -42,14 +40,10 @@ export default function RootLayout({
             </div>
           </div>
         </header>
-        <main className="min-h-screen bg-gray-50">
-          {children}
-        </main>
+        <main className="min-h-screen bg-gray-50">{children}</main>
         <footer className="bg-white border-t">
           <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <p className="text-center text-gray-500">
-              Built with next-markdown-blog package
-            </p>
+            <p className="text-center text-gray-500">Built with next-markdown-blog package</p>
           </div>
         </footer>
       </body>

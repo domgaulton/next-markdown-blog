@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { NextMarkdownBlog } from 'next-markdown-blog';
+import Link from 'next/link';
 import config from '../next-markdown-blog.config.js';
 
 export default async function HomePage() {
@@ -14,8 +14,8 @@ export default async function HomePage() {
           Welcome to Next Markdown Blog Demo
         </h1>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          This is a demonstration of the next-markdown-blog package, showing how easy it is to create
-          a markdown-based blog with Next.js.
+          This is a demonstration of the next-markdown-blog package, showing how easy it is to
+          create a markdown-based blog with Next.js.
         </p>
       </div>
 

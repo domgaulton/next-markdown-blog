@@ -1,6 +1,6 @@
-import { describe, it, before, after } from 'node:test';
+import { mkdirSync, rmSync, writeFileSync } from 'fs';
 import assert from 'node:assert';
-import { writeFileSync, mkdirSync, rmSync } from 'fs';
+import { after, before, describe, it } from 'node:test';
 import { join } from 'path';
 import { NextMarkdownBlog } from '../src/index';
 import { generateAllRoutes, parseRouteParams } from '../src/utils/routing';
@@ -100,9 +100,9 @@ This is a test post without a specific category.
       const posts = await blog.getAllPosts();
 
       assert.strictEqual(posts.length, 3);
-      assert.ok(posts.some(post => post.category === 'technology'));
-      assert.ok(posts.some(post => post.category === 'culture'));
-      assert.ok(posts.some(post => post.category === 'uncategorized'));
+      assert.ok(posts.some((post) => post.category === 'technology'));
+      assert.ok(posts.some((post) => post.category === 'culture'));
+      assert.ok(posts.some((post) => post.category === 'uncategorized'));
     });
 
     it('should get posts by category', async () => {
@@ -136,9 +136,9 @@ This is a test post without a specific category.
       const staticParams = await blog.generateStaticParams();
 
       assert.strictEqual(staticParams.length, 3);
-      assert.ok(staticParams.some(param => param.slug === 'test-tech-post'));
-      assert.ok(staticParams.some(param => param.slug === 'test-culture-post'));
-      assert.ok(staticParams.some(param => param.slug === 'uncategorized-post'));
+      assert.ok(staticParams.some((param) => param.slug === 'test-tech-post'));
+      assert.ok(staticParams.some((param) => param.slug === 'test-culture-post'));
+      assert.ok(staticParams.some((param) => param.slug === 'uncategorized-post'));
     });
 
     it('should handle markdown content correctly', async () => {
@@ -176,9 +176,9 @@ This is a test post without a specific category.
       const routes = generateAllRoutes(posts, config.basePath);
 
       assert.strictEqual(routes.length, 3);
-      assert.ok(routes.some(route => route.fullPath === '/blog/test-tech-post'));
-      assert.ok(routes.some(route => route.fullPath === '/blog/test-culture-post'));
-      assert.ok(routes.some(route => route.fullPath === '/blog/uncategorized-post'));
+      assert.ok(routes.some((route) => route.fullPath === '/blog/test-tech-post'));
+      assert.ok(routes.some((route) => route.fullPath === '/blog/test-culture-post'));
+      assert.ok(routes.some((route) => route.fullPath === '/blog/uncategorized-post'));
     });
 
     it('should parse route parameters correctly', () => {

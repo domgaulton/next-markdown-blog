@@ -1,12 +1,12 @@
-import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import {
-  generateRouteInfo,
-  generateAllRoutes,
-  parseRouteParams,
-  generateStaticParams,
-} from '../src/utils/routing.js';
+import { describe, it } from 'node:test';
 import type { BlogPost } from '../src/types/index.js';
+import {
+  generateAllRoutes,
+  generateRouteInfo,
+  generateStaticParams,
+  parseRouteParams,
+} from '../src/utils/routing.js';
 
 const mockPost: BlogPost = {
   slug: 'test-post',
@@ -101,27 +101,20 @@ describe('generateStaticParams', () => {
     const posts = [mockPost];
     const params = generateStaticParams(posts, '/blog');
 
-    assert.deepStrictEqual(params, [
-      { slug: 'test-post' },
-    ]);
+    assert.deepStrictEqual(params, [{ slug: 'test-post' }]);
   });
 
   it('should generate static params for uncategorized posts', () => {
     const posts = [mockPostUncategorized];
     const params = generateStaticParams(posts, '/blog');
 
-    assert.deepStrictEqual(params, [
-      { slug: 'uncategorized-post' },
-    ]);
+    assert.deepStrictEqual(params, [{ slug: 'uncategorized-post' }]);
   });
 
   it('should generate static params for mixed posts', () => {
     const posts = [mockPost, mockPostUncategorized];
     const params = generateStaticParams(posts, '/blog');
 
-    assert.deepStrictEqual(params, [
-      { slug: 'test-post' },
-      { slug: 'uncategorized-post' },
-    ]);
+    assert.deepStrictEqual(params, [{ slug: 'test-post' }, { slug: 'uncategorized-post' }]);
   });
 });

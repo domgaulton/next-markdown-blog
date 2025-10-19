@@ -30,11 +30,6 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": [
-      "node_modules/**",
-      "dist/**",
-      ".next/**",
-      "coverage/**"
-    ]
+    "ignore": ["node_modules/**", "dist/**", ".next/**", "coverage/**"]
   }
 }

@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { NextMarkdownBlog } from 'next-markdown-blog';
+import Link from 'next/link';
 import config from '../../next-markdown-blog.config.js';
 
 export default async function BlogPage() {
@@ -8,21 +8,22 @@ export default async function BlogPage() {
   const categories = await blog.getCategories();
 
   // Group posts by category
-  const postsByCategory = posts.reduce((acc, post) => {
-    if (!acc[post.category]) {
-      acc[post.category] = [];
-    }
-    acc[post.category].push(post);
-    return acc;
-  }, {} as Record<string, typeof posts>);
+  const postsByCategory = posts.reduce(
+    (acc, post) => {
+      if (!acc[post.category]) {
+        acc[post.category] = [];
+      }
+      acc[post.category].push(post);
+      return acc;
+    },
+    {} as Record<string, typeof posts>
+  );
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">Blog</h1>
-        <p className="text-xl text-gray-600">
-          All posts organized by category
-        </p>
+        <p className="text-xl text-gray-600">All posts organized by category</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -53,9 +54,7 @@ export default async function BlogPage() {
           <div className="space-y-8">
             {Object.entries(postsByCategory).map(([category, categoryPosts]) => (
               <section key={category}>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6 capitalize">
-                  {category}
-                </h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6 capitalize">{category}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {categoryPosts.map((post) => (
                     <article
@@ -66,9 +65,7 @@ export default async function BlogPage() {
                         <time dateTime={post.metadata.date}>
                           {new Date(post.metadata.date).toLocaleDateString()}
                         </time>
-                        {post.metadata.author && (
-                          <span>by {post.metadata.author}</span>
-                        )}
+                        {post.metadata.author && <span>by {post.metadata.author}</span>}
                       </div>
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">
                         <Link
