@@ -84,14 +84,14 @@ export async function getBlogPost(
   // Handle backward compatibility - if contentDir is not provided, category is the second parameter
   const actualContentDir = contentDir || category || '';
   const actualCategory = contentDir ? category : undefined;
-  
+
   const allPosts = await getAllBlogPosts(actualContentDir);
 
   // If category is specified, find by both slug and category
   if (actualCategory) {
     return allPosts.find((post) => post.slug === slug && post.category === actualCategory) || null;
   }
-  
+
   // Otherwise, find by slug only (simplified routing)
   return allPosts.find((post) => post.slug === slug) || null;
 }
