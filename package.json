@@ -1,0 +1,57 @@
+{
+  "name": "next-markdown-blog",
+  "version": "0.1.0",
+  "description": "An npm package that allows Next.js users to create blogs using markdown",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "tsx --test tests/markdown.test.ts tests/routing.test.ts tests/next-markdown-blog.test.ts",
+    "test:unit": "tsx --test tests/markdown.test.ts tests/routing.test.ts tests/next-markdown-blog.test.ts",
+    "test:integration": "tsx --test tests/integration.test.ts",
+    "test:all": "tsx --test tests/*.test.ts",
+    "test:watch": "tsx --test --watch tests/markdown.test.ts tests/routing.test.ts tests/next-markdown-blog.test.ts",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "nextjs",
+    "markdown",
+    "blog",
+    "mdx",
+    "ssg",
+    "static-site-generation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "next": ">=14.0.0",
+    "react": ">=18.0.0"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
+    "rehype": "^13.0.1",
+    "rehype-stringify": "^10.0.0",
+    "unified": "^11.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@biomejs/biome": "^1.4.0",
+    "typescript": "^5.0.0",
+    "tsx": "^4.0.0"
+  }
+}

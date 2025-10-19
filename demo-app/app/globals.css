@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .prose {
+    @apply max-w-none;
+  }
+  
+  .prose h1 {
+    @apply text-4xl font-bold mb-6 text-gray-900;
+  }
+  
+  .prose h2 {
+    @apply text-3xl font-semibold mb-4 mt-8 text-gray-800;
+  }
+  
+  .prose h3 {
+    @apply text-2xl font-semibold mb-3 mt-6 text-gray-700;
+  }
+  
+  .prose h4 {
+    @apply text-xl font-semibold mb-2 mt-4 text-gray-700;
+  }
+  
+  .prose h5 {
+    @apply text-lg font-semibold mb-2 mt-4 text-gray-600;
+  }
+  
+  .prose h6 {
+    @apply text-base font-semibold mb-2 mt-4 text-gray-600;
+  }
+  
+  .prose p {
+    @apply mb-4 leading-relaxed text-gray-700;
+  }
+  
+  .prose a {
+    @apply text-blue-600 hover:text-blue-800 underline transition-colors;
+  }
+  
+  .prose img {
+    @apply max-w-full h-auto rounded-lg shadow-md my-4;
+  }
+  
+  .prose ul {
+    @apply list-disc list-inside mb-4 text-gray-700;
+  }
+  
+  .prose ol {
+    @apply list-decimal list-inside mb-4 text-gray-700;
+  }
+  
+  .prose li {
+    @apply mb-1;
+  }
+  
+  .prose blockquote {
+    @apply border-l-4 border-blue-500 pl-4 italic my-4 text-gray-600 bg-blue-50 py-2;
+  }
+  
+  .prose code {
+    @apply bg-gray-100 px-1 py-0.5 rounded text-sm font-mono text-gray-800;
+  }
+  
+  .prose pre {
+    @apply bg-gray-100 p-4 rounded-lg overflow-x-auto my-4 text-gray-800;
+  }
+  
+  .prose strong {
+    @apply font-semibold text-gray-900;
+  }
+  
+  .prose em {
+    @apply italic text-gray-600;
+  }
+}
