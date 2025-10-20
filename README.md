@@ -167,6 +167,53 @@ interface StyleClasses {
 }
 ```
 
+### Tailwind CSS Configuration
+
+Since the package applies Tailwind classes dynamically, you need to ensure these classes are included in your Tailwind build. The package provides utilities to automatically generate the required safelist.
+
+#### Option 1: Generate Tailwind Config (Recommended)
+
+Use the built-in CLI to generate a Tailwind config with the correct safelist:
+
+```bash
+npx next-markdown-blog generate-tailwind-config
+```
+
+This will read your `next-markdown-blog.config.js` and generate a `tailwind.config.js` with all the required classes in the safelist.
+
+#### Option 2: Manual Configuration
+
+You can also manually extract the required classes and add them to your Tailwind config:
+
+```javascript
+import { generateTailwindSafelist } from 'next-markdown-blog';
+
+// In your tailwind.config.js
+module.exports = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  safelist: generateTailwindSafelist(config.styleClasses),
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+```
+
+#### Option 3: Programmatic Generation
+
+You can also generate the complete Tailwind config programmatically:
+
+```javascript
+import { generateTailwindConfig } from 'next-markdown-blog';
+
+const tailwindConfig = generateTailwindConfig(config.styleClasses);
+// Use tailwindConfig.safelist in your Tailwind configuration
+```
+
 ## Types
 
 The package exports several TypeScript types for better development experience:
