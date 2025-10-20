@@ -5,6 +5,24 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  safelist: [
+    // Classes injected at runtime by the markdown renderer/component
+    'bg-gray-800',
+    'p-4',
+    'pt-6',
+    'rounded-lg',
+    'overflow-x-auto',
+    'my-4',
+    'text-gray-100',
+    'text-white',
+    'text-red-500',
+    // List styling injected at runtime
+    'list-disc',
+    'list-decimal',
+    'list-inside',
+    'mb-4',
+    'mb-1',
+  ],
   theme: {
     extend: {
       typography: {

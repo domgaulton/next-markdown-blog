@@ -1,14 +1,16 @@
 ---
-title: "Why next-markdown-blog is a great package"
-date: "2025-01-19"
-category: "technology"
-ogImage: "/images/next-markdown-blog.png"
-description: "Discover how next-markdown-blog makes creating markdown-based blogs in Next.js effortless and powerful."
-author: "John Doe"
-tags: ["nextjs", "markdown", "blog", "ssg"]
+title: 'Why next-markdown-blog is a great package'
+date: '2025-01-19'
+category: 'technology'
+ogImage: 'https://images.unsplash.com/photo-1760443267021-8df5fa55204e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2664'
+description: 'Discover how next-markdown-blog makes creating markdown-based blogs in Next.js effortless and powerful.'
+author: 'John Doe'
+tags: ['nextjs', 'markdown', 'blog', 'ssg']
 ---
 
 # Why next-markdown-blog is a great package
+
+![Hero image](https://images.unsplash.com/photo-1760443267021-8df5fa55204e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2664)
 
 It makes creating markdown-based blogs in Next.js effortless. With just a few lines of configuration, you can have a fully functional blog with:
 
@@ -30,8 +32,7 @@ const config = {
   contentDir: './content',
   basePath: '/blog',
   styleClasses: {
-    h1: 'text-4xl font-bold',
-    h2: 'text-2xl font-semibold',
+    h1: 'text-4xl font-bold mb-6 text-gray-900 uppercase',
   },
   optimizeImages: true,
 };

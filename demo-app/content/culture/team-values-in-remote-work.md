@@ -1,11 +1,11 @@
 ---
-title: "Team Values in Remote Work"
-date: "2025-01-18"
-category: "culture"
-ogImage: "/images/remote-work.png"
-description: "Exploring the essential values that make remote teams successful and productive."
-author: "Jane Smith"
-tags: ["remote-work", "culture", "team", "values"]
+title: 'Team Values in Remote Work'
+date: '2025-01-18'
+category: 'culture'
+ogImage: '/images/remote-work.jpg'
+description: 'Exploring the essential values that make remote teams successful and productive.'
+author: 'Jane Smith'
+tags: ['remote-work', 'culture', 'team', 'values']
 ---
 
 # Team Values in Remote Work
