@@ -31,8 +31,15 @@ jobs:
 
           echo "Main branch version: $NORMALIZED_MAIN"
 
-          # Compare versions using npm version compare (normalize output and match exactly)
-          COMPARE=$(npm version compare "$NORMALIZED_CURRENT" "$NORMALIZED_MAIN" | tr -d '\r')
+          # Ensure versions are present
+          if [ -z "$NORMALIZED_CURRENT" ] || [ -z "$NORMALIZED_MAIN" ]; then
+            echo "❌ Could not determine versions (current: '$NORMALIZED_CURRENT', main: '$NORMALIZED_MAIN')"
+            echo "Ensure package.json exists on both branches and contains a valid version"
+            exit 1
+          fi
+
+          # Compare versions using npm version compare (strip CR/LF and surrounding whitespace)
+          COMPARE=$(npm version compare "$NORMALIZED_CURRENT" "$NORMALIZED_MAIN" | tr -d '\r\n' | sed -e 's/^\s*//' -e 's/\s*$//')
           if [ "$COMPARE" = "0" ]; then
             echo "❌ Version $CURRENT_VERSION is the same as main branch version $MAIN_VERSION"
             echo "Please update the version in package.json before publishing"
