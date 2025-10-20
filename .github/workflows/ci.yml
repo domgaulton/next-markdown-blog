@@ -7,6 +7,38 @@ on:
     branches: [main]
 
 jobs:
+  package-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check version update
+        run: |
+          # Fetch the latest from origin
+          git fetch origin
+
+          # Get current version from package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
+
+          # Get version from main branch
+          MAIN_VERSION=$(git show origin/main:package.json | node -p "JSON.parse(require('fs').readFileSync('/dev/stdin', 'utf8')).version")
+          echo "Main branch version: $MAIN_VERSION"
+
+          # Compare versions using npm version compare
+          if npm version compare $CURRENT_VERSION $MAIN_VERSION | grep -q "^0$"; then
+            echo "❌ Version $CURRENT_VERSION is the same as main branch version $MAIN_VERSION"
+            echo "Please update the version in package.json before publishing"
+            exit 1
+          elif npm version compare $CURRENT_VERSION $MAIN_VERSION | grep -q "^-1$"; then
+            echo "❌ Version $CURRENT_VERSION is lower than main branch version $MAIN_VERSION"
+            echo "Please update the version in package.json to a higher version before publishing"
+            exit 1
+          else
+            echo "✅ Version $CURRENT_VERSION is higher than main branch version $MAIN_VERSION"
+          fi
+
   test:
     runs-on: ubuntu-latest
 
@@ -53,32 +85,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Check version update
-        run: |
-          # Fetch the latest from origin
-          git fetch origin
-
-          # Get current version from package.json
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          echo "Current version: $CURRENT_VERSION"
-
-          # Get version from main branch
-          MAIN_VERSION=$(git show origin/main:package.json | node -p "JSON.parse(require('fs').readFileSync('/dev/stdin', 'utf8')).version")
-          echo "Main branch version: $MAIN_VERSION"
-
-          # Compare versions using npm version compare
-          if npm version compare $CURRENT_VERSION $MAIN_VERSION | grep -q "^0$"; then
-            echo "❌ Version $CURRENT_VERSION is the same as main branch version $MAIN_VERSION"
-            echo "Please update the version in package.json before publishing"
-            exit 1
-          elif npm version compare $CURRENT_VERSION $MAIN_VERSION | grep -q "^-1$"; then
-            echo "❌ Version $CURRENT_VERSION is lower than main branch version $MAIN_VERSION"
-            echo "Please update the version in package.json to a higher version before publishing"
-            exit 1
-          else
-            echo "✅ Version $CURRENT_VERSION is higher than main branch version $MAIN_VERSION"
-          fi
 
       - name: Build package
         run: |
