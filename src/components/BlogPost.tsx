@@ -52,8 +52,6 @@ export function BlogPostComponent({
 
   const mergedStyles = { ...defaultStyles, ...styleClasses };
 
-  console.log({ mergedStyles })
-
   // Process HTML content to apply custom styles and handle images
   const processContent = (htmlContent: string): string => {
     let processedContent = htmlContent;
@@ -64,7 +62,7 @@ export function BlogPostComponent({
     processedContent = processedContent.replace(
       /<p[^>]*>\s*<code([^>]*)>([\s\S]*?)<\/code>\s*<\/p>/g,
       (_match, codeAttributes, codeInner) => {
-        if (codeInner.includes("\n")) {
+        if (codeInner.includes('\n')) {
           return `<pre><code${codeAttributes}>${codeInner}</code></pre>`;
         }
         return _match;
@@ -88,14 +86,14 @@ export function BlogPostComponent({
 
     // Ensure <pre><code> uses white text, overriding inline red
     processedContent = processedContent.replace(
-      /<pre(\s[^>]*)?>[\s\S]*?<code([^>]*)class=\"([^\"]*)\"/g,
-      (match, _preAttrs, codeAttrs, classValue) => {
+      /<pre(\s[^>]*)?>[\s\S]*?<code([^>]*)class="([^"]*)"/g,
+      (match, classValue) => {
         const withoutRed = classValue
           .split(/\s+/)
           .filter((c: string) => c && c !== 'text-red-500')
           .join(' ');
         const newClass = `${withoutRed} text-white`.trim().replace(/\s+/g, ' ');
-        return match.replace(`class=\"${classValue}\"`, `class=\"${newClass}\"`);
+        return match.replace(`class="${classValue}"`, `class="${newClass}"`);
       }
     );
 
