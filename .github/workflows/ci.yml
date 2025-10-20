@@ -7,6 +7,70 @@ on:
     branches: [main]
 
 jobs:
+  package-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch full history to access main branch
+
+      - name: Check version update
+        run: |
+          # Fetch the latest from origin
+          git fetch origin main
+
+          # Get current version from package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          # Get version from main branch
+          MAIN_VERSION=$(git show origin/main:package.json | node -p "JSON.parse(require('fs').readFileSync('/dev/stdin', 'utf8')).version")
+
+          # Normalize versions: strip leading 'v', trim whitespace/newlines/CRs
+          NORMALIZED_CURRENT=$(echo "$CURRENT_VERSION" | tr -d '\r\n' | sed -e 's/^v//' -e 's/^\s*//' -e 's/\s*$//')
+          NORMALIZED_MAIN=$(echo "$MAIN_VERSION" | tr -d '\r\n' | sed -e 's/^v//' -e 's/^\s*//' -e 's/\s*$//')
+
+          echo "Current version: $NORMALIZED_CURRENT"
+          echo "Main branch version: $NORMALIZED_MAIN"
+
+          # Ensure versions are present
+          if [ -z "$NORMALIZED_CURRENT" ] || [ -z "$NORMALIZED_MAIN" ]; then
+            echo "❌ Could not determine versions (current: '$NORMALIZED_CURRENT', main: '$NORMALIZED_MAIN')"
+            echo "Ensure package.json exists on both branches and contains a valid version"
+            exit 1
+          fi
+
+          # Compare versions using Node.js (no external dependencies)
+          COMPARE=$(node -e "
+            function compareVersions(v1, v2) {
+              const parts1 = v1.split('.').map(Number);
+              const parts2 = v2.split('.').map(Number);
+              
+              for (let i = 0; i < Math.max(parts1.length, parts2.length); i++) {
+                const part1 = parts1[i] || 0;
+                const part2 = parts2[i] || 0;
+                
+                if (part1 > part2) return 1;
+                if (part1 < part2) return -1;
+              }
+              return 0;
+            }
+            
+            const result = compareVersions('$NORMALIZED_CURRENT', '$NORMALIZED_MAIN');
+            console.log(result);
+          ")
+
+          if [ "$COMPARE" = "0" ]; then
+            echo "❌ Version $NORMALIZED_CURRENT is the same as main branch version $NORMALIZED_MAIN"
+            echo "Please update the version in package.json before publishing"
+            exit 1
+          elif [ "$COMPARE" = "-1" ]; then
+            echo "❌ Version $NORMALIZED_CURRENT is lower than main branch version $NORMALIZED_MAIN"
+            echo "Please update the version in package.json to a higher version before publishing"
+            exit 1
+          else
+            echo "✅ Version $NORMALIZED_CURRENT is higher than main branch version $NORMALIZED_MAIN"
+          fi
+
   test:
     runs-on: ubuntu-latest
 
@@ -40,7 +104,7 @@ jobs:
 
   integration-test:
     runs-on: ubuntu-latest
-    needs: test
+    needs: [package-version, test]
 
     steps:
       - uses: actions/checkout@v4
@@ -53,32 +117,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Check version update
-        run: |
-          # Fetch the latest from origin
-          git fetch origin
-
-          # Get current version from package.json
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          echo "Current version: $CURRENT_VERSION"
-
-          # Get version from main branch
-          MAIN_VERSION=$(git show origin/main:package.json | node -p "JSON.parse(require('fs').readFileSync('/dev/stdin', 'utf8')).version")
-          echo "Main branch version: $MAIN_VERSION"
-
-          # Compare versions using npm version compare
-          if npm version compare $CURRENT_VERSION $MAIN_VERSION | grep -q "^0$"; then
-            echo "❌ Version $CURRENT_VERSION is the same as main branch version $MAIN_VERSION"
-            echo "Please update the version in package.json before publishing"
-            exit 1
-          elif npm version compare $CURRENT_VERSION $MAIN_VERSION | grep -q "^-1$"; then
-            echo "❌ Version $CURRENT_VERSION is lower than main branch version $MAIN_VERSION"
-            echo "Please update the version in package.json to a higher version before publishing"
-            exit 1
-          else
-            echo "✅ Version $CURRENT_VERSION is higher than main branch version $MAIN_VERSION"
-          fi
 
       - name: Build package
         run: |
@@ -140,7 +178,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    needs: [test, integration-test]
+    needs: [package-version, test, integration-test]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
