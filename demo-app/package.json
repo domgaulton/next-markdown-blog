@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "next": "^14.2.0",
-    "next-markdown-blog": "link:..",
+    "next-markdown-blog": "file:..",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
