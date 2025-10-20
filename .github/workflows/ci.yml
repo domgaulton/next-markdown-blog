@@ -12,11 +12,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch full history to access main branch
 
       - name: Check version update
         run: |
           # Fetch the latest from origin
-          git fetch origin
+          git fetch origin main
 
           # Get current version from package.json
           CURRENT_VERSION=$(node -p "require('./package.json').version")
@@ -24,11 +26,10 @@ jobs:
           MAIN_VERSION=$(git show origin/main:package.json | node -p "JSON.parse(require('fs').readFileSync('/dev/stdin', 'utf8')).version")
 
           # Normalize versions: strip leading 'v', trim whitespace/newlines/CRs
-          NORMALIZED_CURRENT=$(echo "$CURRENT_VERSION" | tr -d '\r' | sed -e 's/^v//' -e 's/^\s*//' -e 's/\s*$//')
-          NORMALIZED_MAIN=$(echo "$MAIN_VERSION" | tr -d '\r' | sed -e 's/^v//' -e 's/^\s*//' -e 's/\s*$//')
+          NORMALIZED_CURRENT=$(echo "$CURRENT_VERSION" | tr -d '\r\n' | sed -e 's/^v//' -e 's/^\s*//' -e 's/\s*$//')
+          NORMALIZED_MAIN=$(echo "$MAIN_VERSION" | tr -d '\r\n' | sed -e 's/^v//' -e 's/^\s*//' -e 's/\s*$//')
 
           echo "Current version: $NORMALIZED_CURRENT"
-
           echo "Main branch version: $NORMALIZED_MAIN"
 
           # Ensure versions are present
@@ -38,18 +39,36 @@ jobs:
             exit 1
           fi
 
-          # Compare versions using npm version compare (strip CR/LF and surrounding whitespace)
-          COMPARE=$(npm version compare "$NORMALIZED_CURRENT" "$NORMALIZED_MAIN" | tr -d '\r\n' | sed -e 's/^\s*//' -e 's/\s*$//')
+          # Compare versions using Node.js semver comparison
+          COMPARE=$(node -e "
+            const semver = require('semver');
+            const current = '$NORMALIZED_CURRENT';
+            const main = '$NORMALIZED_MAIN';
+            
+            if (!semver.valid(current) || !semver.valid(main)) {
+              console.error('Invalid semver format');
+              process.exit(1);
+            }
+            
+            if (semver.eq(current, main)) {
+              console.log('0');
+            } else if (semver.lt(current, main)) {
+              console.log('-1');
+            } else {
+              console.log('1');
+            }
+          ")
+
           if [ "$COMPARE" = "0" ]; then
-            echo "❌ Version $CURRENT_VERSION is the same as main branch version $MAIN_VERSION"
+            echo "❌ Version $NORMALIZED_CURRENT is the same as main branch version $NORMALIZED_MAIN"
             echo "Please update the version in package.json before publishing"
             exit 1
           elif [ "$COMPARE" = "-1" ]; then
-            echo "❌ Version $CURRENT_VERSION is lower than main branch version $MAIN_VERSION"
+            echo "❌ Version $NORMALIZED_CURRENT is lower than main branch version $NORMALIZED_MAIN"
             echo "Please update the version in package.json to a higher version before publishing"
             exit 1
           else
-            echo "✅ Version $CURRENT_VERSION is higher than main branch version $MAIN_VERSION"
+            echo "✅ Version $NORMALIZED_CURRENT is higher than main branch version $NORMALIZED_MAIN"
           fi
 
   test:
