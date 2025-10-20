@@ -7,6 +7,9 @@
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "next-markdown-blog": "./dist/bin/generate-tailwind-config.js"
+  },
   "files": [
     "dist",
     "README.md"
@@ -21,8 +24,7 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
-    "type-check": "tsc --noEmit",
-    "prepublishOnly": "npm run build"
+    "type-check": "tsc --noEmit"
   },
   "keywords": [
     "nextjs",

@@ -32,6 +32,18 @@ export {
   parseRouteParams,
 } from './utils/routing';
 
+// Tailwind utilities
+export {
+  defaultStyleClasses,
+  extractTailwindClasses,
+  generateTailwindSafelist,
+  generateTailwindConfig,
+} from './utils/tailwind-classes';
+export {
+  generateTailwindConfigFile,
+  generateTailwindConfigCLI,
+} from './utils/generate-tailwind-config';
+
 // Main class for managing blog posts
 export class NextMarkdownBlog {
   private config: import('./types/index').NextMarkdownBlogConfig;

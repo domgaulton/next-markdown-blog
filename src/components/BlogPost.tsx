@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import type { BlogPost, StyleClasses } from '../types/index.js';
+import { defaultStyleClasses } from '../utils/tailwind-classes.js';
 
 interface BlogPostProps {
   post: BlogPost;
@@ -30,27 +31,7 @@ export function BlogPostComponent({
   styleClasses = {},
   optimizeImages = false,
 }: BlogPostProps) {
-  const defaultStyles: StyleClasses = {
-    h1: 'text-4xl font-bold mb-6',
-    h2: 'text-3xl font-semibold mb-4 mt-8',
-    h3: 'text-2xl font-semibold mb-3 mt-6',
-    h4: 'text-xl font-semibold mb-2 mt-4',
-    h5: 'text-lg font-semibold mb-2 mt-4',
-    h6: 'text-base font-semibold mb-2 mt-4',
-    p: 'mb-4 leading-relaxed',
-    a: 'text-blue-600 hover:text-blue-800 underline',
-    img: 'max-w-full h-auto rounded-lg shadow-md',
-    ul: 'list-disc list-inside mb-4',
-    ol: 'list-decimal list-inside mb-4',
-    li: 'mb-1',
-    blockquote: 'border-l-4 border-gray-300 pl-4 italic my-4',
-    pre: 'bg-gray-800 p-4 rounded-lg overflow-x-auto my-4',
-    code: 'px-1 py-0.5 rounded text-sm font-mono text-red-500',
-    strong: 'font-semibold',
-    em: 'italic',
-  };
-
-  const mergedStyles = { ...defaultStyles, ...styleClasses };
+  const mergedStyles = { ...defaultStyleClasses, ...styleClasses };
 
   // Process HTML content to apply custom styles and handle images
   const processContent = (htmlContent: string): string => {
@@ -157,8 +138,8 @@ export function BlogPostComponent({
       />
 
       {post.metadata.tags && post.metadata.tags.length > 0 && (
-        <footer className="mt-8 pt-6 border-t border-gray-200">
-          <div className="flex flex-wrap gap-2">
+        <footer className="mt-8 border-t border-gray-200">
+          <div className="flex flex-wrap gap-2 py-8">
             {post.metadata.tags.map((tag) => (
               <span key={tag} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
                 #{tag}
