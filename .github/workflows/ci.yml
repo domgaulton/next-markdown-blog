@@ -26,12 +26,13 @@ jobs:
           MAIN_VERSION=$(git show origin/main:package.json | node -p "JSON.parse(require('fs').readFileSync('/dev/stdin', 'utf8')).version")
           echo "Main branch version: $MAIN_VERSION"
 
-          # Compare versions using npm version compare
-          if npm version compare $CURRENT_VERSION $MAIN_VERSION | grep -q "^0$"; then
+          # Compare versions using npm version compare (normalize output and match exactly)
+          COMPARE=$(npm version compare "$CURRENT_VERSION" "$MAIN_VERSION" | tr -d '\r')
+          if [ "$COMPARE" = "0" ]; then
             echo "❌ Version $CURRENT_VERSION is the same as main branch version $MAIN_VERSION"
             echo "Please update the version in package.json before publishing"
             exit 1
-          elif npm version compare $CURRENT_VERSION $MAIN_VERSION | grep -q "^-1$"; then
+          elif [ "$COMPARE" = "-1" ]; then
             echo "❌ Version $CURRENT_VERSION is lower than main branch version $MAIN_VERSION"
             echo "Please update the version in package.json to a higher version before publishing"
             exit 1
