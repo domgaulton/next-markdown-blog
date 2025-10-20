@@ -1,10 +1,10 @@
 ---
-title: "Getting Started with Next.js"
-date: "2025-01-17"
-category: "uncategorized"
+title: 'Getting Started with Next.js'
+date: '2025-01-17'
+category: 'uncategorized'
 description: "A beginner's guide to building modern web applications with Next.js."
-author: "Alex Johnson"
-tags: ["nextjs", "react", "tutorial", "web-development"]
+author: 'Alex Johnson'
+tags: ['nextjs', 'react', 'tutorial', 'web-development']
 ---
 
 # Getting Started with Next.js

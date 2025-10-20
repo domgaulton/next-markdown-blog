@@ -62,6 +62,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
       <BlogPostComponent
         post={post}
+        includeMetadataOnBlogPost={false}
         styleClasses={config.styleClasses}
         optimizeImages={config.optimizeImages}
       />

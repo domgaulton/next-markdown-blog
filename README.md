@@ -268,6 +268,25 @@ React component for rendering blog posts.
 />
 ```
 
+You will need to add any run-time styles such as `code` and `pre` styling to your tailwind.config.js
+
+```js
+module.exports = {
+  content: [],
+  safelist: [
+    // Classes injected at runtime by the markdown renderer/component
+    'bg-gray-800',
+    'p-4',
+    'pt-6',
+    'rounded-lg',
+    'overflow-x-auto',
+    'my-4',
+    'text-gray-100',
+    'text-white',
+  ],
+  theme: {},
+```
+
 ### Utility Functions
 
 The package also exports utility functions for advanced use cases:
