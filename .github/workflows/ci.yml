@@ -20,14 +20,19 @@ jobs:
 
           # Get current version from package.json
           CURRENT_VERSION=$(node -p "require('./package.json').version")
-          echo "Current version: $CURRENT_VERSION"
-
           # Get version from main branch
           MAIN_VERSION=$(git show origin/main:package.json | node -p "JSON.parse(require('fs').readFileSync('/dev/stdin', 'utf8')).version")
-          echo "Main branch version: $MAIN_VERSION"
+
+          # Normalize versions: strip leading 'v', trim whitespace/newlines/CRs
+          NORMALIZED_CURRENT=$(echo "$CURRENT_VERSION" | tr -d '\r' | sed -e 's/^v//' -e 's/^\s*//' -e 's/\s*$//')
+          NORMALIZED_MAIN=$(echo "$MAIN_VERSION" | tr -d '\r' | sed -e 's/^v//' -e 's/^\s*//' -e 's/\s*$//')
+
+          echo "Current version: $NORMALIZED_CURRENT"
+
+          echo "Main branch version: $NORMALIZED_MAIN"
 
           # Compare versions using npm version compare (normalize output and match exactly)
-          COMPARE=$(npm version compare "$CURRENT_VERSION" "$MAIN_VERSION" | tr -d '\r')
+          COMPARE=$(npm version compare "$NORMALIZED_CURRENT" "$NORMALIZED_MAIN" | tr -d '\r')
           if [ "$COMPARE" = "0" ]; then
             echo "❌ Version $CURRENT_VERSION is the same as main branch version $MAIN_VERSION"
             echo "Please update the version in package.json before publishing"
