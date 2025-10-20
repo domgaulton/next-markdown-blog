@@ -1,5 +1,6 @@
 // Main exports
 export { BlogPostComponent } from './components/BlogPost';
+
 // Types
 export type {
   BlogPost,
@@ -10,6 +11,7 @@ export type {
   StyleClasses,
 } from './types/index';
 
+// Utility functions
 export {
   getAllBlogPosts,
   getBlogPost,
@@ -17,7 +19,11 @@ export {
   getMarkdownFiles,
   readMarkdownFile,
 } from './utils/file-system';
-// Utility functions
+// Tailwind utilities
+export {
+  generateTailwindConfigCLI,
+  generateTailwindConfigFile,
+} from './utils/generate-tailwind-config';
 export {
   extractCategoryFromPath,
   extractSlugFromPath,
@@ -31,18 +37,12 @@ export {
   generateStaticParams,
   parseRouteParams,
 } from './utils/routing';
-
-// Tailwind utilities
 export {
   defaultStyleClasses,
   extractTailwindClasses,
-  generateTailwindSafelist,
   generateTailwindConfig,
+  generateTailwindSafelist,
 } from './utils/tailwind-classes';
-export {
-  generateTailwindConfigFile,
-  generateTailwindConfigCLI,
-} from './utils/generate-tailwind-config';
 
 // Main class for managing blog posts
 export class NextMarkdownBlog {

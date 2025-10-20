@@ -37,7 +37,9 @@ export function extractTailwindClasses(styleClasses: StyleClasses = {}): string[
     if (classString) {
       // Split by spaces and filter out empty strings
       const classes = classString.split(/\s+/).filter(Boolean);
-      classes.forEach((cls) => classSet.add(cls));
+      classes.forEach((cls) => {
+        classSet.add(cls);
+      });
     }
   });
 
@@ -60,7 +62,7 @@ export function generateTailwindSafelist(styleClasses: StyleClasses = {}): strin
  */
 export function generateTailwindConfig(styleClasses: StyleClasses = {}) {
   const safelist = generateTailwindSafelist(styleClasses);
-  
+
   return {
     safelist,
     // You can extend this with other Tailwind config options as needed
