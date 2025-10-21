@@ -526,6 +526,7 @@ tags: ['tag1', 'tag2']
 ## Feature Roadmap
 
 - 🔖 **Categories** & 🏷️ **Tags** api to return a list from your markdown
+- **Styling** fix with tailwind
 
 ## Development
 
