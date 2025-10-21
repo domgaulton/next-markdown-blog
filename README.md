@@ -1,6 +1,8 @@
-# next-markdown-blog
+# Next Markdown Blog
 
 https://www.npmjs.com/package/next-markdown-blog
+
+[![CI](https://github.com/domgaulton/next-markdown-blog/actions/workflows/ci.yml/badge.svg)](https://github.com/domgaulton/next-markdown-blog/actions/workflows/ci.yml)
 
 An npm package that allows Next.js users to create blogs using markdown with server-side rendering, dynamic routing, and custom styling.
 
